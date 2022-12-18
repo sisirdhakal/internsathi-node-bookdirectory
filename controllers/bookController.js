@@ -1,12 +1,28 @@
 const Book = require("../models/BookModel")
 const CustomError = require("../errors")
-const { checkPermissions } = require("../utils")
 const { StatusCodes } = require("http-status-codes")
 
 
 const getAllBooks = async (req, res, next) => {
 
-    const books = await Book.find({})
+    const { textValue, author, category } = req.query
+
+    let toFind = {}
+
+    if (textValue) {
+        toFind.name = { $regex: textValue, $options: 'i' }
+    }
+    if (author) {
+
+        toFind.author = author
+    }
+    if (category) {
+        toFind.category = category
+    }
+
+    let result = Book.find(toFind)
+
+    const books = await result
 
     res.status(StatusCodes.OK).json({ count: books.length, books })
 
@@ -40,17 +56,23 @@ const createBook = async (req, res, next) => {
 
 const updateBook = async (req, res, next) => {
 
-    const { name } = req.body
+    // const { name, author, publishedBy, price, category } = req.body
     const { id: bookId } = req.params
 
 
-    const book = await Book.findOne({ _id: bookId })
+    const book = await Book.findOneAndUpdate({ _id: bookId }, req.body, { new: true, runValidators: true })
 
-    checkPermissions(req.user, book.createdBy)
+    /**
+     * this is the another way for updating
+     */
 
-    book.name = name;
+    // book.name = name;
+    // book.author = author;
+    // book.publishedBy = publishedBy;
+    // book.price = price;
+    // book.category = category
 
-    await book.save()
+    // await book.save()
 
     res.status(StatusCodes.OK).json({ book, msg: "successfully updated" })
 
@@ -62,8 +84,6 @@ const deleteBook = async (req, res, next) => {
     const { id: bookId } = req.params
 
     const book = await Book.findOne({ _id: bookId })
-
-    checkPermissions(req.user, book.createdBy)
 
     await book.remove()
 
