@@ -1,8 +1,13 @@
 const { StatusCodes } = require("http-status-codes")
 
 
+/**
+ * custom error middleware 
+ */
+
 const customError = async (err, req, res, next) => {
 
+    // console.log(err)
     let customError = {
         statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
         message: err.message || "Something went wrong ,Please try again"
@@ -23,7 +28,7 @@ const customError = async (err, req, res, next) => {
             customError.message = `Task of id ${err.value} cannot be found`
     }
 
-    return res.status(customError.statusCode).json({ msg: customError.message })
+    return res.status(customError.statusCode).json({ msg: customError })
 
 }
 

@@ -30,7 +30,6 @@ const AuthRouter = require("./routes/authRoute")
 const BookRouter = require("./routes/bookRoute")
 const customError = require("./middlewares/customerror")
 const notFound = require("./middlewares/notfound")
-const authenticationMiddleware = require("./middlewares/authentication")
 
 /**
  * security

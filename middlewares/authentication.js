@@ -2,14 +2,13 @@ const { UnauthorizedError } = require("../errors")
 const { verifyToken } = require("../utils")
 
 
-const authenticationMiddleware = async (res, req, next) => {
+const authenticationMiddleware = async (req, res, next) => {
 
     try {
 
         let token
 
         const authHeader = req.headers.authorization
-
         if (req.cookies) {
             token = req.cookies.token
         }
@@ -20,13 +19,18 @@ const authenticationMiddleware = async (res, req, next) => {
             token = authHeader.split(" ")[1]
         }
 
+        if (!token) {
+            throw new BadRequestError("Please provide a token")
+        }
+
         const payload = verifyToken(token)
 
         if (!payload) {
             throw new UnauthorizedError("Please provide valid token")
         }
 
-        req.user = { name: payload.username, userId: payload.userId }
+        req.user = { name: payload.username, userId: payload.userId, role: payload.role }
+        next()
 
     } catch (error) {
         next(error)

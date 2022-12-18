@@ -6,8 +6,9 @@ const { StatusCodes } = require("http-status-codes")
 
 const getAllBooks = async (req, res, next) => {
 
+    const books = await Book.find({})
 
-    res.status(StatusCodes.OK).json({ hello: "hello" })
+    res.status(StatusCodes.OK).json({ count: books.length, books })
 
 }
 
@@ -25,7 +26,7 @@ const getSingleBook = async (req, res, next) => {
         throw new CustomError.NotFoundError(`Book of id ${bookId} not found`)
     }
 
-    res.status(StatusCodes.OK).json({ job })
+    res.status(StatusCodes.OK).json({ book })
 
 }
 
