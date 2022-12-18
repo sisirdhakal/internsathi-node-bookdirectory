@@ -1,4 +1,6 @@
 require("dotenv").config()
+
+// for handling the async errors 
 require("express-async-errors")
 
 const express = require("express")
@@ -25,6 +27,7 @@ const port = process.env.PORT || 3000
  */
 
 const AuthRouter = require("./routes/authRoute")
+const BookRouter = require("./routes/bookRoute")
 const customError = require("./middlewares/customerror")
 const notFound = require("./middlewares/notfound")
 const authenticationMiddleware = require("./middlewares/authentication")
@@ -55,6 +58,7 @@ app.use(express.urlencoded({ extended: false }))
  */
 
 app.use("/api/v1/auth/", AuthRouter)
+app.use("/api/v1/books/", BookRouter)
 
 
 app.use(notFound)

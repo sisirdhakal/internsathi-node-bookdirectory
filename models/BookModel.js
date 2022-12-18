@@ -2,31 +2,34 @@ const mongoose = require("mongoose")
 
 const BookSchema = new mongoose.Schema({
     name: {
-        type: "string",
+        type: String,
         required: [true, "Please provide the book name"],
         minlength: 3
     },
-    Author: {
-        type: "string",
+    author: {
+        type: String,
         required: [true, "Please provide the author name"],
         minlength: 3
     },
-    Publication: {
-        type: "string",
+    publishedBy: {
+        type: String,
         required: [true, "Please provide the publication name"],
         minlength: 3
     },
-    PublishedDate: {
-
-    },
-    Category: {
-        type: "string",
+    // publishedDate: {
+    //     type: Date,
+    //     required: [true, "please provide published date"]
+    // },
+    category: {
+        type: String,
         required: [true, "Please provide the category name"],
         minlength: 3
     },
-    Price: {
-
-    },
+    price: {
+        type: Number,
+        required: [true, "Please provide the book price"],
+        default: 0
+    }
 
 })
 

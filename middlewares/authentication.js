@@ -34,4 +34,20 @@ const authenticationMiddleware = async (res, req, next) => {
 
 }
 
-module.exports = authenticationMiddleware
+/**
+ * for checking the authorization
+ */
+
+const authorizeMiddleware = (...value) => {
+    return (req, res, next) => {
+        if (!value.includes(req.user.role)) {
+            throw new UnauthorizedError("Unauthorized to access this route")
+        }
+        next()
+    }
+}
+
+module.exports = {
+    authenticationMiddleware,
+    authorizeMiddleware
+}
