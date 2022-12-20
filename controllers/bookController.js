@@ -87,7 +87,7 @@ const deleteBook = async (req, res, next) => {
 
     await book.remove()
 
-    res.status(StatusCodes.OK).json({ msg: "Job deleted sucessfully !!" })
+    res.status(StatusCodes.OK).json({ msg: "Book deleted sucessfully !!" })
 
 }
 
